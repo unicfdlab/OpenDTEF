@@ -97,7 +97,7 @@ export WM_COMPILE_OPTION=Opt
 #   HPMPI | CRAY-MPICH | FJMPI | QSMPI | SGIMPI | INTELMPI | USERMPI
 export WM_MPLIB=SYSTEMOPENMPI
  
-source $FOAM_INST_DIR/$WM_PROJECT-$WM_PROJECT_VERSION/etc/pyshrc
+source $WM_PROJECT_DIR/etc/pyshrc
 
 
 #------------------------------------------------------------------------------
