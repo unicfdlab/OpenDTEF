@@ -96,8 +96,6 @@ export WM_COMPILE_OPTION=Opt
 # = SYSTEMOPENMPI | OPENMPI | SYSTEMMPI | MPI | MPICH | MPICH-GM |
 #   HPMPI | CRAY-MPICH | FJMPI | QSMPI | SGIMPI | INTELMPI | USERMPI
 export WM_MPLIB=SYSTEMOPENMPI
- 
-source $WM_PROJECT_DIR/etc/pyshrc
 
 
 #------------------------------------------------------------------------------
@@ -158,5 +156,7 @@ fi
 
 # Cleanup variables (done as final statement for a clean exit code)
 unset foamOldDirs projectDir
+ 
+source $WM_PROJECT_DIR/etc/pyshrc
 
 #------------------------------------------------------------------------------
