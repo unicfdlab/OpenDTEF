@@ -67,11 +67,9 @@ echo "    $MPI_ARCH_PATH"
 case "$WM_MPLIB" in
 (OPENMPI | MPICH)
     ./make$WM_MPLIB -test "$MPI_ARCH_PATH" || ./make$WM_MPLIB
-    echo "MPI build rc: $?"
     ;;
 esac
 
-echo "Unreachable line"
 
 #------------------------------------------------------------------------------
 # Building scotch on different platforms is still a bit of a pain
