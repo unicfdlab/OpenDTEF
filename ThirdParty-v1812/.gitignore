@@ -30,6 +30,7 @@ platforms/
 !/etc/
 
 # End-of-file
+!/PyFoam-latest/
 !/openmpi-1.10.4/
 !/fftw-3.3.7/
 !/scotch_6.0.6/
