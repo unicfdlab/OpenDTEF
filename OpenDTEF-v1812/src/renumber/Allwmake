@@ -10,7 +10,7 @@ targetType=libso                            # Preferred library type
 wmake $targetType renumberMethods
 
 warning="==> skip SloanRenumber"
-if have_boost
+if [ 0 -eq 1 ]
 then
     wmake $targetType SloanRenumber || echo "$warning (build issues detected)"
 else
@@ -19,7 +19,7 @@ fi
 
 
 warning="==> skip zoltanRenumber"
-if have_zoltan
+if [ 0 -eq 1 ]
 then
     wmake $targetType zoltanRenumber || echo "$warning (build issues detected)"
 else

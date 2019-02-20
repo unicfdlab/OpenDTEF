@@ -278,10 +278,10 @@ fi
 #------------------------------------------------------------------------------
 echo
 echo ========================================
-if [ -n "$CGAL_ARCH_PATH00" ]
+if [ -n "$CGAL_ARCH_PATH0000" ]
 then
     echo "CGAL/boost"
-    ./makeCGAL -test "$CGAL_ARCH_PATH00" "$BOOST_ARCH_PATH" || \
+    ./makeCGAL -test "$CGAL_ARCH_PATH0000" "$BOOST_ARCH_PATH" || \
     ./makeCGAL || warnBuildIssues CGAL
 else
     warnNotFound CGAL   # CGAL is optional

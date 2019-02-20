@@ -6,7 +6,7 @@ cd ${0%/*} || exit 1                        # Run from this directory
 #------------------------------------------------------------------------------
 unset COMP_FLAGS LINK_FLAGS
 
-if have_cgal
+if [ 0 -eq 1 ]
 then
     wmake $targetType PolyhedronReader
     export COMP_FLAGS='-IPolyhedronReader'
