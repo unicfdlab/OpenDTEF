@@ -89,3 +89,4 @@ wmake $targetType atmosphericModels
 wmake $targetType thermophysicalModels/thermophysicalPropertiesFvPatchFields/liquidProperties
 
 #------------------------------------------------------------------------------
+wmake $targetType compressibleTools
