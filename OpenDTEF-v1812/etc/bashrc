@@ -93,7 +93,7 @@ export WM_COMPILE_OPTION=Opt
 # [WM_MPLIB] - MPI implementation:
 # = SYSTEMOPENMPI | OPENMPI | SYSTEMMPI | MPI | MPICH | MPICH-GM |
 #   HPMPI | CRAY-MPICH | FJMPI | QSMPI | SGIMPI | INTELMPI | USERMPI
-[ -z "$WM_MPLIB" ] export WM_MPLIB=SYSTEMOPENMPIexport WM_MPLIB=SYSTEMOPENMPI export WM_MPLIB=OPENMPI
+[ -z "$WM_MPLIB" ] export WM_MPLIB=SYSTEMOPENMPI export WM_MPLIB=SYSTEMOPENMPI export WM_MPLIB=OPENMPI
 
 
 #------------------------------------------------------------------------------
