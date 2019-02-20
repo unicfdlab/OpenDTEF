@@ -40,7 +40,10 @@
 #
 #------------------------------------------------------------------------------
 
-export WM_PROJECT=OpenDTEF
+WM_FOAM_PROJECT=OpenFOAM
+WM_DTEF_PROJECT=OpenDTEF
+WM_PYTHONPATH=
+export WM_PROJECT=OpenFOAM
 export WM_PROJECT_VERSION=v1812
 
 # [projectDir] - directory containing this OpenFOAM version.
@@ -93,7 +96,7 @@ export WM_COMPILE_OPTION=Opt
 # [WM_MPLIB] - MPI implementation:
 # = SYSTEMOPENMPI | OPENMPI | SYSTEMMPI | MPI | MPICH | MPICH-GM |
 #   HPMPI | CRAY-MPICH | FJMPI | QSMPI | SGIMPI | INTELMPI | USERMPI
-[ -z "$WM_MPLIB" ] export WM_MPLIB=SYSTEMOPENMPI export WM_MPLIB=SYSTEMOPENMPI export WM_MPLIB=OPENMPI
+[ -z "$WM_MPLIB" ] && export WM_MPLIB=OPENMPI
 
 
 #------------------------------------------------------------------------------
