@@ -40,8 +40,6 @@
 #
 #------------------------------------------------------------------------------
 
-WM_FOAM_PROJECT=OpenFOAM 
-WM_PYTHONPATH=
 export WM_PROJECT=OpenDTEF
 export WM_PROJECT_VERSION=v1812
 
@@ -95,7 +93,7 @@ export WM_COMPILE_OPTION=Opt
 # [WM_MPLIB] - MPI implementation:
 # = SYSTEMOPENMPI | OPENMPI | SYSTEMMPI | MPI | MPICH | MPICH-GM |
 #   HPMPI | CRAY-MPICH | FJMPI | QSMPI | SGIMPI | INTELMPI | USERMPI
-[ -z "$WM_MPLIB" ] && export WM_MPLIB=OPENMPI
+[ -z "$WM_MPLIB" ] export WM_MPLIB=SYSTEMOPENMPIexport WM_MPLIB=SYSTEMOPENMPI export WM_MPLIB=OPENMPI
 
 
 #------------------------------------------------------------------------------
@@ -134,7 +132,7 @@ foamOldDirs="$WM_PROJECT_DIR $WM_THIRD_PARTY_DIR \
 export WM_PROJECT_DIR="$projectDir"
 
 # [WM_PROJECT_USER_DIR] - Location of user files
-export WM_PROJECT_USER_DIR="$HOME/$WM_PROJECT/$USER-$WM_PROJECT_VERSION"
+export WM_PROJECT_USER_DIR="$HOME/$WM_DTEF_PROJECT/$USER-$WM_PROJECT_VERSION"
 
 # [WM_PROJECT_SITE] - Location of site-specific (group) files
 # Default (unset) implies WM_PROJECT_DIR/site
@@ -150,7 +148,7 @@ then
     fi
     . "$WM_PROJECT_DIR/etc/config.sh/setup" "$@"
 else
-    echo "Error: did not locate installation path for $WM_PROJECT-$WM_PROJECT_VERSION" 1>&2
+    echo "Error: did not locate installation path for $WM_DTEF_PROJECT-$WM_PROJECT_VERSION" 1>&2
     echo "No directory: $WM_PROJECT_DIR" 1>&2
 fi
 
