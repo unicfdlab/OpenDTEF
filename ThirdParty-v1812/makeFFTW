@@ -153,7 +153,7 @@ else
             --prefix=$FFTW_ARCH_PATH \
             --libdir=$FFTW_ARCH_PATH/lib$WM_COMPILER_LIB_ARCH \
             --enable-shared --disable-static \
-            --disable-fortran \
+            --disable-fortran --disable-doc \
             $configOpt \
         && set +x \
         && make -j $WM_NCOMPPROCS \

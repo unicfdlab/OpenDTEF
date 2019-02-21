@@ -1,0 +1,9 @@
+#!/bin/sh
+
+python $WM_THIRD_PARTY_DIR/PyFoam-latest/setup.py build
+python $WM_THIRD_PARTY_DIR/PyFoam-latest/setup.py install --prefix $WM_PYFOAM
+
+#
+#END-OF-FILE
+#
+

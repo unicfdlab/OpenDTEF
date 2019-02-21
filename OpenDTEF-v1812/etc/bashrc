@@ -159,5 +159,21 @@ fi
 unset foamOldDirs projectDir
  
 source $WM_PROJECT_DIR/etc/pyshrc
+ 
+source $WM_PROJECT_DIR/etc/pyshrc
+ 
+source $WM_PROJECT_DIR/etc/pyshrc
+ 
+source $WM_PROJECT_DIR/etc/pyshrc
+ 
+source $WM_PROJECT_DIR/etc/pyshrc
+ 
+source $WM_PROJECT_DIR/etc/pyshrc
+ 
+source $WM_PROJECT_DIR/etc/pyshrc
+ 
+source $WM_PROJECT_DIR/etc/pyshrc
+ 
+source $WM_PROJECT_DIR/etc/pyshrc
 
 #------------------------------------------------------------------------------
