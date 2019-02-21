@@ -52,12 +52,6 @@ echo
 applications/Allwmake $targetType $*
  
 $WM_THIRD_PARTY_DIR/makePyFoam
- 
-$WM_THIRD_PARTY_DIR/makePyFoam
- 
-$WM_THIRD_PARTY_DIR/makePyFoam
- 
-$WM_THIRD_PARTY_DIR/makePyFoam
 
 # Additional components/modules
 if [ -d "$WM_PROJECT_DIR/modules" ]
