@@ -171,7 +171,7 @@ else
 
         buildDIR=$buildBASE/$mpiPACKAGE
 
-        cd $MPI_SOURCE_DIR || exit 1
+        ( tar xfz $sourceBASE/openmpi-1.10.6.tgz --directory=$sourceBASE && cd $MPI_SOURCE_DIR ) || exit 1
         export GIT_DIR=$PWD/.git # Mask seeing our own git-repo
         [ -e Makefile ] && make distclean 2>/dev/null
 
@@ -186,7 +186,7 @@ else
             --libdir=$MPI_ARCH_PATH/lib$WM_COMPILER_LIB_ARCH \
             --disable-orterun-prefix-by-default \
             --enable-shared --disable-static \
-            --enable-mpi-fortran=none \
+            --enable-mpi-fortran \
             $configOpt \
         && set +x \
         && make -j $WM_NCOMPPROCS \
