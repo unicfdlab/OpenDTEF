@@ -171,7 +171,7 @@ else
 
         buildDIR=$buildBASE/$mpiPACKAGE
 
-        ( tar xfz $sourceBASE/openmpi-1.10.6.tgz --directory=$sourceBASE && cd $MPI_SOURCE_DIR ) || exit 1
+        ( tar xfz $sourceBASE/openmpi-1.10.6.tar.gz --directory=$sourceBASE && cd $MPI_SOURCE_DIR ) || exit 1
         export GIT_DIR=$PWD/.git # Mask seeing our own git-repo
         [ -e Makefile ] && make distclean 2>/dev/null
 
