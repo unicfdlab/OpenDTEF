@@ -1,0 +1,16 @@
+#!/bin/sh
+cd ${0%/*} || exit 1    # Run from this directory
+. $WM_PROJECT_DIR/wmake/scripts/AllwmakeParseArguments
+. $WM_PROJECT_DIR/wmake/scripts/have_adios2
+
+# -----------------------------------------------------------------------------
+
+if have_adios2
+then
+    adiosFoam/Allwmake
+    adiosWrite/Allwmake
+else
+    hint_adios2
+fi
+
+# -----------------------------------------------------------------------------

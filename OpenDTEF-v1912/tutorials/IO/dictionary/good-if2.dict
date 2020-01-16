@@ -1,0 +1,48 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v1912                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      dictionary;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// Do comparison
+
+#if #eval "${FOAM_API:-0}"
+    foamApi nonZero;
+#else
+    foamApi zeroValue;
+#endif
+
+#if #eval "${XX_XXX_FOAM_API:-1000}"
+    other "some entry";
+#else
+    other "unexpected";
+#endif
+
+
+#if #eval "${FOAM_API:-0} >= 1910"
+    evalType hasEvalWithConditionals;
+#else
+    evalType none;
+#endif
+
+
+// Silly example, but can also force cast from scalar to bool
+
+#if #eval "bool(2 * pi())"
+    condition true;
+#else
+    condition false;
+#endif
+
+
+// ************************************************************************* //

@@ -1,0 +1,21 @@
+#!/bin/sh
+cd ${0%/*} || exit 1    # Run from this directory
+. $WM_PROJECT_DIR/wmake/scripts/AllwmakeParseArguments
+. $WM_PROJECT_DIR/wmake/scripts/have_adios2
+
+# -----------------------------------------------------------------------------
+
+if have_adios2
+then
+    # extra compile/link options
+    adiosFoam=$(cd ../adiosFoam && pwd -P)
+
+    export ADIOS_EXTRA_COMP="-I$adiosFoam/lnInclude"
+    export ADIOS_EXTRA_LINK='-L$(FOAM_USER_LIBBIN) -ladiosFoam'
+
+    wmake libso
+else
+    echo "==> skip adiosFoam library"
+fi
+
+# -----------------------------------------------------------------------------

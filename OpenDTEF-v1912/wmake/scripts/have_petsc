@@ -1,0 +1,164 @@
+#----------------------------------*-sh-*--------------------------------------
+# =========                 |
+# \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+#  \\    /   O peration     |
+#   \\  /    A nd           | www.openfoam.com
+#    \\/     M anipulation  |
+#------------------------------------------------------------------------------
+#     Copyright (C) 2018-2019 OpenCFD Ltd.
+#------------------------------------------------------------------------------
+# License
+#     This file is part of OpenFOAM, licensed under GNU General Public License
+#     <http://www.gnu.org/licenses/>.
+#
+# Script
+#     have_petsc
+#
+# Description
+#     Detection/setup of PETSC
+#
+# Requires
+#     PETSC_ARCH_PATH
+#
+# Functions provided
+#     have_petsc, no_petsc, echo_petsc, hint_petsc
+#
+# Variables set on success
+#     HAVE_PETSC
+#     PETSC_ARCH_PATH
+#     PETSC_INC_DIR
+#     PETSC_LIB_DIR
+#
+#------------------------------------------------------------------------------
+. ${WM_PROJECT_DIR:?}/wmake/scripts/sysFunctions    # General system functions
+
+#------------------------------------------------------------------------------
+
+# Reset variables
+no_petsc()
+{
+    unset HAVE_PETSC PETSC_INC_DIR PETSC_LIB_DIR
+    return 0
+}
+
+
+# Reset variables
+echo_petsc()
+{
+    echo "petsc=${HAVE_PETSC:-false}"
+    echo "root=$PETSC_ARCH_PATH"
+    echo "include=$PETSC_INC_DIR"
+    echo "library=$PETSC_LIB_DIR"
+}
+
+
+# Provide hint for enabling
+hint_petsc()
+{
+    /bin/cat<<INFORMATION 1>&2
+==> petsc not found?
+
+Enable in the OpenFOAM etc/bashrc, define manually or try with the
+following (POSIX shell):
+
+    eval \$(foamEtcFile -sh -config petsc -- -force)
+
+==
+INFORMATION
+}
+
+
+# On success, return 0 and export variables
+# -> HAVE_PETSC, PETSC_INC_DIR, PETSC_LIB_DIR
+have_petsc()
+{
+    local prefix header library incName libName pkgName settings warn
+    warn="==> skip petsc"
+
+    # Setup - prefer current environment value? (TDB)
+    if [ ! -d "$PETSC_ARCH_PATH" ]
+    then
+        if settings=$($WM_PROJECT_DIR/bin/foamEtcFile config.sh/petsc)
+        then
+            . "$settings"
+        else
+            [ -n "$warn" ] && echo "$warn (no config.sh/petsc settings)"
+            return 2
+        fi
+    fi
+
+    # Expected location, include/library names
+    prefix="$PETSC_ARCH_PATH"
+    incName="petsc.h"
+    libName="libpetsc"
+    pkgName="PETSc"
+
+    # ----------------------------------
+    if isNone "$prefix"
+    then
+        [ -n "$warn" ] && echo "$warn (disabled)"
+        return 1
+    elif hasAbsdir "$prefix"
+    then
+        header=$(findFirstFile "$prefix/include/$incName")
+        library="$(findExtLib $libName)"
+    elif isSystem "$prefix"
+    then
+        header=$(findFirstFile "/usr/local/include/$incName" "/usr/include/$incName")
+        prefix=$(sysPrefix "$header")
+
+        # No system header, attempt discovery with pkg-config
+        if [ -z "$header" ] && pkg-config --exists "$pkgName" 2>/dev/null
+        then
+            header=$(pkg-config --cflags-only-I "$pkgName" | sed -e 's/^-[IL]//')
+            library=$(pkg-config --libs-only-L "$pkgName" | sed -e 's/^-[IL]//')
+
+            prefix="${header%/*}"     # Basename
+
+            # Artifically adjust names (for later)
+            [ -n "$header" ] && header="$header/$incName"
+            [ -n "$library" ] && library="$library/$libName"
+        fi
+    else
+        unset prefix
+    fi
+    # ----------------------------------
+
+    # Header
+    [ -n "$header" ] || {
+        [ -n "$warn" ] && echo "$warn (no header)"
+        return 2
+    }
+
+    # Library
+    [ -n "$library" ] || library=$(findLibrary \
+        "$prefix/lib/$libName" \
+        "$prefix/lib$WM_COMPILER_LIB_ARCH/$libName" \
+    ) || {
+        [ -n "$warn" ] && echo "$warn (no library)"
+        return 2
+    }
+
+    # ----------------------------------
+
+    # TODO: check size of petsc integer vs label, real vs double?
+
+    # OK
+    export HAVE_PETSC=true
+    export PETSC_ARCH_PATH="$prefix"
+    export PETSC_INC_DIR="${header%/*}"     # Basename
+    export PETSC_LIB_DIR="${library%/*}"    # Basename
+}
+
+
+# Force reset of old variables
+no_petsc
+
+# Testing
+if [ "$1" = "-test" ]
+then
+    have_petsc
+    echo_petsc
+fi
+
+#------------------------------------------------------------------------------
