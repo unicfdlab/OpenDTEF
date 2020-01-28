@@ -37,5 +37,5 @@ additionalPsiThermo/additionalPsiThermos.C
  */
 /* TurbulentModels/compressible/additionalCompressibleTurbulenceModels.C */
 
-LIB = $(FOAM_USER_LIBBIN)/libcompressibleTools
+LIB = $(FOAM_LIBBIN)/libcompressibleTools
 
