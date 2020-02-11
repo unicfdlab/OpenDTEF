@@ -1,15 +1,19 @@
-#!/usr/bin/bash
+#!/bin/bash
 
 HERE=`pwd`
 cd $WM_THIRD_PARTY_DIR/swak4Foam-latest
+
+if [ ! -e ./swakConfiguration ] ; then
+    echo "Using automatic swakConfiguration because none is there"
+    echo
+    ln -s ./swakConfiguration.automatic ./swakConfiguration
+fi
 
 echo "Making swak4Foam"
 ./Allwmake
 
 cd $HERE
 
-
 #
 #END-OF-FILE
 #
-
