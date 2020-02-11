@@ -1,0 +1,15 @@
+#!/usr/bin/bash
+
+HERE=`pwd`
+cd $WM_THIRD_PARTY_DIR/swak4Foam-latest
+
+echo "Making swak4Foam"
+./Allwmake
+
+cd $HERE
+
+
+#
+#END-OF-FILE
+#
+

@@ -62,6 +62,8 @@ echo "Compile OpenFOAM applications"
 echo
 applications/Allwmake $targetType $*
  
+$WM_THIRD_PARTY_DIR/makeSwak4FoamFoam
+ 
 $WM_THIRD_PARTY_DIR/makePyFoam
 
 # Additional components/modules

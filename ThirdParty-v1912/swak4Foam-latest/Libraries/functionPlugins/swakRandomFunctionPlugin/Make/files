@@ -1,0 +1,3 @@
+randomExponentialPluginFunction.C
+
+LIB = $(FOAM_LIBBIN)/libswakRandomFunctionPlugin

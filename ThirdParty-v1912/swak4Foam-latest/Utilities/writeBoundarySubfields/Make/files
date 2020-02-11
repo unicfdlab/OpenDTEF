@@ -1,0 +1,3 @@
+writeBoundarySubfields.C
+
+EXE = $(FOAM_APPBIN)/writeBoundarySubfields
