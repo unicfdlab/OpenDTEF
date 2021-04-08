@@ -1,0 +1,3 @@
+testReadingAndWritingExpressionResults.C
+
+EXE = $(FOAM_APPBIN)/testReadingAndWritingExpressionResults

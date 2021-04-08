@@ -1,0 +1,17 @@
+#!/bin/sh
+
+HERE=`pwd`
+cd $WM_THIRD_PARTY_DIR/PyFoam-latest
+
+mkdir -p $WM_PYFOAM/lib/python2.7/site-packages
+mkdir -p $WM_PYFOAM/bin
+
+python setup.py build
+python setup.py install --prefix $WM_PYFOAM
+
+cd $HERE
+
+#
+#END-OF-FILE
+#
+

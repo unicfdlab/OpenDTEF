@@ -1,0 +1,15 @@
+#!/bin/sh
+cd "${0%/*}" || exit                                # Run from this directory
+. ${WM_PROJECT_DIR:?}/bin/tools/RunFunctions        # Tutorial run functions
+#------------------------------------------------------------------------------
+
+runApplication extrudeMesh
+
+# For output fields from checkMesh
+mkdir -p 1
+
+runApplication checkMesh -writeAllFields
+
+paraFoam -touch -vtk
+
+#------------------------------------------------------------------------------

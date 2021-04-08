@@ -1,0 +1,4 @@
+swakThermophysicalPluginFunction.C
+swakCompressibleTurbulencePluginFunction.C
+
+LIB = $(FOAM_LIBBIN)/libswakThermoTurbFunctionPlugin

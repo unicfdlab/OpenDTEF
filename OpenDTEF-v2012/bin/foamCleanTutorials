@@ -1,0 +1,141 @@
+#!/bin/sh
+#------------------------------------------------------------------------------
+# =========                 |
+# \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+#  \\    /   O peration     |
+#   \\  /    A nd           | www.openfoam.com
+#    \\/     M anipulation  |
+#------------------------------------------------------------------------------
+#     Copyright (C) 2011 OpenFOAM Foundation
+#     Copyright (C) 2019-2020 OpenCFD Ltd.
+#------------------------------------------------------------------------------
+# License
+#     This file is part of OpenFOAM, distributed under GPL-3.0-or-later.
+#
+# Script
+#     foamCleanTutorials
+#
+# Description
+#     Run either Allwclean, Allclean or default cleanCase in current directory
+#     and all its subdirectories.
+#
+#------------------------------------------------------------------------------
+. ${WM_PROJECT_DIR:?}/bin/tools/CleanFunctions  # Tutorial clean functions
+
+thisScript="$0"
+if [ "/${thisScript#/}" != "$thisScript" ]
+then
+    thisScript="$PWD/$thisScript"
+fi
+
+printHelp() {
+    cat <<USAGE
+
+Usage: ${0##*/} [OPTION]
+       ${0##*/} [OPTION] directory
+options:
+  -0                use cleanCase0 instead of cleanCase
+  -case <dir>       specify starting directory, default is cwd
+  -self             avoid Allclean script (prevent infinite recursion)
+  -help             print the usage
+
+Recursively clean an OpenFOAM case directory.
+By default uses Allclean, Allwclean when present.
+The -skipFirst option is the same as -self.
+
+USAGE
+   exit 0  # clean exit
+}
+
+# Report error and exit
+die()
+{
+    exec 1>&2
+    echo
+    echo "Error encountered:"
+    while [ "$#" -ge 1 ]; do echo "    $1"; shift; done
+    echo
+    echo "See '${0##*/} -help' for usage"
+    echo
+    exit 1
+}
+
+#------------------------------------------------------------------------------
+
+# Parse options
+unset skipSelf clean0
+if [ "$#" -gt 0 ]
+then
+    case "$1" in
+    -h | -help*)
+        printHelp
+        ;;
+    -0)
+        clean0=true
+        ;;
+    -case)
+        [ "$#" -ge 2 ] || die "'$1' option requires an argument"
+        shift
+        cd "$1" 2>/dev/null || {
+            echo "${0##*}: No such directory $1" 1>&2
+            exit 2
+        }
+        ;;
+    -self* | -skipFirst)
+        skipSelf=true
+        ;;
+    --)
+        shift
+        break
+        ;;
+    *)
+        cd "$1" 2>/dev/null || {
+            echo "${0##*}: No such directory $1" 1>&2
+            exit 2
+        }
+        ;;
+    esac
+fi
+
+
+unset exitCode
+if [ -z "$skipSelf" ]
+then
+    # Use specialized script(s)
+    if [ -f Allwclean ]
+    then
+        ./Allwclean
+        exitCode="$?"
+    elif [ -f Allclean ]
+    then
+        ./Allclean
+        exitCode="$?"
+    fi
+fi
+
+
+if [ -n "$exitCode" ]
+then
+    exit "$exitCode"
+elif [ -d system ]
+then
+    # Normal case
+    if [ "$clean0" = true ]
+    then
+        cleanCase0
+    else
+        cleanCase
+    fi
+elif [ -d Make ]
+then
+    # Normal application
+    cleanApplication
+else
+    # Recurse into subdirectories
+    for caseName in *
+    do
+        ( cd "$caseName" 2>/dev/null && "$thisScript" )
+    done
+fi
+
+#------------------------------------------------------------------------------

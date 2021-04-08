@@ -1,0 +1,3 @@
+swakRadiationModelPluginFunction.C
+
+LIB = $(FOAM_LIBBIN)/libswakRadiationModelFunctionPlugin
