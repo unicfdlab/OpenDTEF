@@ -1,0 +1,3 @@
+ContributionScalarFunctionPlugin.C
+
+LIB = $(FOAM_LIBBIN)/libswakTestFunctionPlugin

@@ -1,0 +1,98 @@
+#------------------------------------------------------------------------------
+unset(LINK_LIBRARIES)
+
+# Prior to paraview-5.6 no working directory support in Catalyst
+if (${ParaView_VERSION} LESS 5.6)
+    add_definitions(-DNO_CATALYST_WORKING_DIRECTORY)
+    message(WARNING "==== CAUTION: Catalyst without chdir capability ====")
+endif()
+
+if (${ParaView_VERSION} VERSION_GREATER_EQUAL 5.7)
+    if (TARGET VTK::ParallelMPI)
+        set(FOAM_USING_VTK_MPI TRUE)
+    endif()
+    if (TARGET ParaView::PythonCatalyst)
+        message("has catalyst")
+    else()
+        message("no catalyst")
+    endif()
+endif()
+
+# ----------------------------------------------------------------------
+
+link_directories(
+    ${FOAM_LIBBIN}
+    ${FOAM_LIBBIN}/dummy
+)
+
+include_directories(
+    ${LIB_SRC}/OpenFOAM/include
+    ${LIB_SRC}/OpenFOAM/lnInclude
+    ${LIB_SRC}/OSspecific/${WM_OSTYPE}/lnInclude
+    ${LIB_SRC}/finiteArea/lnInclude
+    ${LIB_SRC}/finiteVolume/lnInclude
+    ${LIB_SRC}/fileFormats/lnInclude
+    ${LIB_SRC}/conversion/lnInclude
+    ${LIB_SRC}/meshTools/lnInclude
+    ${LIB_SRC}/lagrangian/basic/lnInclude
+    ${LIB_SRC}/overset/lnInclude
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+
+file(GLOB SOURCE_FILES
+    catalystCoprocess.C
+    catalystTools.C
+    catalystInput.C
+    catalystFunctionObject.C
+
+    cloud/catalystCloud.C
+    cloud/foamVtkCloudAdaptor.C
+
+    areaMesh/catalystFaMesh.C
+    areaMesh/foamVtkFaMeshAdaptor.C
+    areaMesh/foamVtkFaMeshAdaptorGeom.C
+    areaMesh/foamVtkFaMeshAdaptorFields.C
+
+    volMesh/catalystFvMesh.C
+    volMesh/foamVtkFvMeshAdaptor.C
+    volMesh/foamVtkFvMeshAdaptorGeom.C
+    volMesh/foamVtkFvMeshAdaptorFields.C
+)
+
+set(OPENFOAM_LIBNAMES
+    OpenFOAM
+    Pstream
+    finiteArea
+    finiteVolume
+    fileFormats
+    meshTools
+    conversion
+    lagrangian
+    overset
+)
+
+add_library(
+    catalystFoam
+    SHARED
+    ${SOURCE_FILES}
+)
+
+set_target_properties(
+    catalystFoam
+    PROPERTIES
+    VERSION ${pv_version}
+    SOVERSION ${pv_api}
+)
+
+target_link_libraries(
+    catalystFoam
+    ${VTK_LIBRARIES}
+    ${LINK_LIBRARIES}
+    ${OPENFOAM_LIBNAMES}
+)
+
+install(TARGETS catalystFoam DESTINATION lib)
+
+#-----------------------------------------------------------------------------

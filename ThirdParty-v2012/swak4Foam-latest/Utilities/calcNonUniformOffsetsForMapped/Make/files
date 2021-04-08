@@ -1,0 +1,4 @@
+
+calcNonUniformOffsetsForMapped.C
+
+EXE = $(FOAM_APPBIN)/calcNonUniformOffsetsForMapped

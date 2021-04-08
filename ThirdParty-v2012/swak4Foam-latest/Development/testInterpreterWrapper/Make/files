@@ -1,0 +1,3 @@
+testInterpreterWrapper.C
+
+EXE = $(FOAM_APPBIN)/testInterpreterWrapper

@@ -1,0 +1,17 @@
+#!/bin/sh
+cd "${0%/*}" || exit                                # Run from this directory
+. ${WM_PROJECT_DIR:?}/bin/tools/RunFunctions        # Tutorial run functions
+#------------------------------------------------------------------------------
+
+runApplication blockMesh
+
+## Serial
+#runApplication snappyHexMesh -overwrite
+#runApplication $(getApplication)
+
+## Parallel
+runApplication decomposePar -fileHandler collated
+runParallel snappyHexMesh -overwrite -fileHandler collated
+runApplication reconstructParMesh -constant -fileHandler collated -mergeTol 1e-6
+
+#------------------------------------------------------------------------------

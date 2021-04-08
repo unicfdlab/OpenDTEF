@@ -1,0 +1,8 @@
+groovyBCCommons.C
+groovyBCFvPatchFields.C
+groovyBCDirectionFvPatchFields.C
+groovyBCFixedValueFvPatchFields.C
+groovyBCJumpFvPatchFields.C
+groovyBCPointPatchFields.C
+
+LIB = $(FOAM_LIBBIN)/libgroovyBC

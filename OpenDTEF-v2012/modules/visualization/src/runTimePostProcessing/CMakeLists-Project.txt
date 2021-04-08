@@ -1,0 +1,121 @@
+#-----------------------------------------------------------------------------
+
+if(${VTK_VERSION_MAJOR} LESS 6)
+    message(FATAL_ERROR " VTK version is too old - requires VTK6 or newer")
+endif()
+
+#-----------------------------------------------------------------------------
+unset(LINK_LIBRARIES)
+unset(FOAM_USING_VTK_MPI)
+
+# Test some characteristics
+
+if (${ParaView_VERSION} VERSION_GREATER_EQUAL 5.7)
+    if (TARGET "VTK::ParallelMPI")
+        set(FOAM_USING_VTK_MPI TRUE)
+    endif()
+elseif (${VTK_VERSION} LESS 8.90)
+    # Older way to test for VTK MPI
+
+    set(test_file ${CMAKE_CURRENT_BINARY_DIR}/check_mpi.cxx)
+    file(WRITE ${test_file}
+        "#include <vtkMPICommunicator.h>\n"
+        "int main() {\n"
+        "  vtkMPICommunicator* p = vtkMPICommunicator::New();\n"
+        "  p->Delete();\n"
+        "  return 0;\n"
+        "}"
+    )
+    try_compile(FOAM_USING_VTK_MPI
+        ${CMAKE_CURRENT_BINARY_DIR} ${test_file}
+        LINK_LIBRARIES vtkParallelMPI
+        CMAKE_FLAGS "-DINCLUDE_DIRECTORIES=${VTK_INCLUDE_DIRS}"
+    )
+
+    if (FOAM_USING_VTK_MPI)
+        include(vtkMPI)
+        set(LINK_LIBRARIES vtkParallelMPI)
+    endif()
+elseif (${ParaView_VERSION} LESS_EQUAL 0)
+    #TODO if (TARGET "ParallelMPI")
+    #TODO     set(FOAM_USING_VTK_MPI TRUE)
+    #TODO endif()
+endif()
+
+#-----------------------------------------------------------------------------
+
+if (FOAM_USING_VTK_MPI)
+    add_definitions(-DFOAM_USING_VTK_MPI)
+    message("Building with VTK MPI")
+else()
+    message(WARNING "==== Building without VTK MPI ====")
+endif()
+
+#-----------------------------------------------------------------------------
+
+# Predefined values from CMakeLists-library.txt
+link_directories(${OPENFOAM_LINK_DIRS})
+
+include_directories(
+    ${OPENFOAM_INCLUDE_DIRS}
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+
+file(GLOB SOURCE_FILES
+    fieldVisualisationBase.C
+    scalarBar.C
+    functionObjectBase.C
+    functionObjectCloud.C
+    functionObjectLine.C
+    functionObjectSurface.C
+    geometryBase.C
+    geometryCloud.C
+    geometryCloudGather.C
+    geometryPatches.C
+    geometryPatchesGather.C
+    geometrySurface.C
+    pathline.C
+    pointData.C
+    runTimePostProcessing.C
+    runTimePostProcessingFunctionObject.C
+    scene.C
+    surface.C
+    surfaceGather.C
+    text.C
+    contourFilter.C
+    cuttingPlaneFilter.C
+    volumeFilter.C
+)
+
+add_library(
+    runTimePostProcessing
+    SHARED
+    ${SOURCE_FILES}
+)
+
+set_target_properties(
+    runTimePostProcessing
+    PROPERTIES
+    VERSION ${VTK_VERSION}
+    SOVERSION ${VTK_VERSION_MAJOR}
+)
+
+target_link_libraries(
+    runTimePostProcessing
+    ${VTK_LIBRARIES}
+    ${LINK_LIBRARIES}
+    ${OPENFOAM_LIBNAMES}
+)
+
+
+install(TARGETS ${CMAKE_PROJECT_NAME} DESTINATION lib)
+
+## Record VTK version for general bookkeeping
+# file(WRITE
+#     ${CMAKE_BINARY_DIR}/version
+#     "VTK_VERSION=${VTK_VERSION}\n"
+# )
+
+#-----------------------------------------------------------------------------

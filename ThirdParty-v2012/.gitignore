@@ -1,0 +1,50 @@
+# Ignore editor and misc backup files - anywhere
+*~
+.*~
+*.bak
+*.bak[0-9][0-9]
+\#*\#
+
+# Ignore source packages - anywhere
+*.tar.bz2
+*.tar.gz
+*.tar
+*.tgz
+*.gtgz
+
+# Ignore build and platforms folders
+build/
+platforms/
+lnInclude/
+linux64Gcc*/
+
+# Generated files in the main directory
+/*.html
+*.pyc
+
+# Ignore unpacked sources in the main directory (match pkg-ver)
+# this also matches symlinks
+/*[-_][0-9]*
+
+# Ignore all top-level sub-directories
+/*/
+
+# Do not ignore these ones though
+!/etc/
+
+# End-of-file
+!/PyFoam-latest/
+PyFoam-latest/PyFoam.egg-info/
+PyFoam-latest/dist/
+!/swak4Foam-latest/
+swak4Foam-latest/Libraries/rules/foamVersion
+swak4Foam-latest/Libraries/swak4FoamParsers/Make/filesThatAreOnlyInSomeDistributions/
+swak4Foam-latest/Libraries/swak4FoamParsers/foamVersion4swak.H
+swak4Foam-latest/foamVersionThisIsCompiledFor
+swak4Foam-latest/log
+swak4Foam-latest/swakConfiguration
+!/openmpi-1.10.6.tar.gz
+!/fftw-3.3.7/
+!/scotch_6.0.9/
+!/ADIOS2-2.4.0/
+

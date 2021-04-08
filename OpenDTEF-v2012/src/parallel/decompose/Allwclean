@@ -1,0 +1,14 @@
+#!/bin/sh
+cd "${0%/*}" || exit                                # Run from this directory
+
+#------------------------------------------------------------------------------
+
+wclean metisDecomp
+wclean kahipDecomp
+wclean scotchDecomp
+wclean decompositionMethods
+wclean decompose
+
+./Allwclean-mpi
+
+#------------------------------------------------------------------------------
